@@ -9,4 +9,4 @@
 ## Description
 
 Bankist Home - The homepage for Bankist, an online banking-like web application.
-A project involving advanced DOM manipulation techniques.
+A project involving advanced DOM manipulation techniques
