@@ -6,6 +6,11 @@ const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".btn--close-modal");
 const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
 
+// Smooth scroll
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector("#section--1");
+
+// Modal
 const openModal = function (e) {
     e.preventDefault();
     modal.classList.remove("hidden");
@@ -28,10 +33,7 @@ document.addEventListener("keydown", function (e) {
     }
 });
 
-// Smooth scroll
-const btnScrollTo = document.querySelector(".btn--scroll-to");
-const section1 = document.querySelector("#section--1");
-
+// Button to scroll to 1° section
 btnScrollTo.addEventListener("click", function(e) {
     // Scrolling
     // One way...
@@ -44,5 +46,15 @@ btnScrollTo.addEventListener("click", function(e) {
     }); */
 
     // Or another (I'm gonna get ya)
-    section1.scrollIntoView({behavior: "smooth"});
+    section1.scrollIntoView({ behavior: "smooth" });
+});
+
+// Page navigation
+document.querySelector(".nav__links").addEventListener("click", function(e) {
+    // Matching strategy
+    if (e.target.classList.contains("nav__link")) {
+        e.preventDefault();
+        const id = e.target.getAttribute("href");
+        document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+    }
 });
