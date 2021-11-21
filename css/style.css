@@ -452,8 +452,6 @@ h4 {
     opacity: 0.7;
     cursor: pointer;
     transition: all 0.5s;
-    /* Only necessary when overlying images */
-    /* box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.7); */
 }
 
 .dots__dot:last-child {
@@ -461,7 +459,6 @@ h4 {
 }
 
 .dots__dot--active {
-    /* background-color: #fff; */
     background-color: #888;
     opacity: 1;
 }
@@ -671,6 +668,6 @@ h4 {
     width: 100%;
     font-size: 1.5rem;
     font-weight: 400;
-    background-color: white;
+    background-color: #fff;
     color: #bbb;
 }

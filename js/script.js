@@ -28,13 +28,13 @@ const tabsContainer = document.querySelector(".operations__tab-container");
 const tabsContent = document.querySelectorAll(".operations__content");
 
 // Modal window
-const openModal = function (e) {
+const openModal = function(e) {
     e.preventDefault();
     modal.classList.remove("hidden");
     overlay.classList.remove("hidden");
 };
 
-const closeModal = function () {
+const closeModal = function() {
     modal.classList.add("hidden");
     overlay.classList.add("hidden");
 };
@@ -44,7 +44,7 @@ btnsOpenModal.forEach(btn => btn.addEventListener("click", openModal));
 btnCloseModal.addEventListener("click", closeModal);
 overlay.addEventListener("click", closeModal);
 
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", function(e) {
     if (e.key === "Escape" && !modal.classList.contains("hidden")) {
         closeModal();
     }
@@ -70,7 +70,7 @@ nav.addEventListener("mouseout", handleHover.bind(1));
 // Sticky navigation: Intersection Observer API
 const navHeight = nav.getBoundingClientRect().height;
 
-const stickyNav = function (entries) {
+const stickyNav = function(entries) {
     const [entry] = entries;
 
     if (!entry.isIntersecting) nav.classList.add("sticky");
@@ -112,7 +112,7 @@ btnScrollTo.addEventListener("click", function(e) {
 });
 
 // Reveal sections
-const revealSection = function (entries, observe) {
+const revealSection = function(entries, observe) {
     const [entry] = entries;
 
     // Guard clause
@@ -136,7 +136,7 @@ allSections.forEach(function(section) {
 });
 
 // Lazy loading images
-const loadImg = function (entries, observer) {
+const loadImg = function(entries, observer) {
     const [entry] = entries;
 
     if (!entry.isIntersecting) return;
@@ -177,3 +177,81 @@ tabsContainer.addEventListener("click", function(e) {
     // Activate content area
     document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add("operations__content--active");
 });
+
+// Slider
+const slider = function() {
+    const slides = document.querySelectorAll(".slide");
+    const btnLeft = document.querySelector(".slider__btn--left");
+    const btnRight = document.querySelector(".slider__btn--right");
+    const dotContainer = document.querySelector(".dots");
+
+    let curSlide = 0;
+    const maxSlide = slides.length;
+
+    // Functions
+    const createDots = function() {
+        slides.forEach(function(_, i) {
+            dotContainer.insertAdjacentHTML("beforeend",
+            `<button class="dots__dot" data-slide="${i}"></button>`);
+        });
+    };
+
+    const activateDot = function(slide) {
+        document.querySelectorAll(".dots__dot").forEach(dot => dot.classList.remove("dots__dot--active"));
+
+        document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add("dots__dot--active");
+    };
+
+    const goToSlide = function(slide) {
+        slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`));
+    };
+
+    const prevSlide = function() {
+        if (curSlide === 0) {
+            curSlide = maxSlide - 1;
+        } else {
+            curSlide--;
+        }
+        
+        goToSlide(curSlide);
+        activateDot(curSlide);
+    };
+
+    const nextSlide = function() {
+        if (curSlide === (maxSlide - 1)) {
+            curSlide = 0;
+        } else {
+            curSlide++
+        }
+
+        goToSlide(curSlide);
+        activateDot(curSlide);
+    };
+
+    const init = function() {
+        createDots();
+        activateDot(0);
+        goToSlide(0);
+    };
+    init();
+
+    // Event handlers
+    btnLeft.addEventListener("click", prevSlide);
+    btnRight.addEventListener("click", nextSlide);
+
+    document.addEventListener("keydown", function(e) {
+        // e.key === "ArrowLeft" && prevSlide();
+        // e.key === "ArrowRight" && nextSlide();
+        if (e.key === "ArrowLeft") prevSlide();
+        if (e.key === "ArrowRight") nextSlide();
+    });
+
+    dotContainer.addEventListener("click", function(e) {
+        if (e.target.classList.contains("dots__dot")) {
+            const { slide } = e.target.dataset;
+            goToSlide(slide);
+            activateDot(slide);
+        }
+    });
+};
+slider();
