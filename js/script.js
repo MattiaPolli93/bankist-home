@@ -13,13 +13,16 @@ const nav = document.querySelector(".nav");
 const btnScrollTo = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
 
+// Sticky navigation
+const header = document.querySelector(".header");
+
+// Reveal sections
+const allSections = document.querySelectorAll(".section");
+
 // Tabs component
 const tabs = document.querySelectorAll(".operations__tab");
 const tabsContainer = document.querySelector(".operations__tab-container");
 const tabsContent = document.querySelectorAll(".operations__content");
-
-// Sticky navigation
-const header = document.querySelector(".header");
 
 // Modal window
 const openModal = function (e) {
@@ -105,11 +108,34 @@ btnScrollTo.addEventListener("click", function(e) {
     section1.scrollIntoView({ behavior: "smooth" });
 });
 
+// Reveal sections
+const revealSection = function (entries, observe) {
+    const [entry] = entries;
+
+    // Guard clause
+    if (!entry.isIntersecting) return;
+
+    // Make sections visible
+    entry.target.classList.remove("section--hidden");
+
+    // Stop observing - for improved performance
+    observe.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+    root: null,
+    threshold: 0.15
+});
+
+allSections.forEach(function(section) {
+    sectionObserver.observe(section);
+    section.classList.add("section--hidden");
+});
+
 // Tabs component
 tabsContainer.addEventListener("click", function(e) {
     const clicked = e.target.closest(".operations__tab");
 
-    // Guard clause
     if (!clicked) return;
 
     // Remove active tabs
