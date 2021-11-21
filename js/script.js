@@ -19,6 +19,9 @@ const header = document.querySelector(".header");
 // Reveal sections
 const allSections = document.querySelectorAll(".section");
 
+// Lazy loading images
+const imgTargets = document.querySelectorAll("img[data-src]");
+
 // Tabs component
 const tabs = document.querySelectorAll(".operations__tab");
 const tabsContainer = document.querySelector(".operations__tab-container");
@@ -131,6 +134,32 @@ allSections.forEach(function(section) {
     sectionObserver.observe(section);
     section.classList.add("section--hidden");
 });
+
+// Lazy loading images
+const loadImg = function (entries, observer) {
+    const [entry] = entries;
+
+    if (!entry.isIntersecting) return;
+
+    // Replace src with data-src
+    entry.target.src = entry.target.dataset.src;
+
+    // Remove filter when loading's over
+    entry.target.addEventListener("load", function() {
+        entry.target.classList.remove("lazy-img");
+    });
+
+    observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+    root: null,
+    threshold: 0,
+    // Conceal lazy loading from viewers
+    rootMargin: "200px"
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
 
 // Tabs component
 tabsContainer.addEventListener("click", function(e) {
