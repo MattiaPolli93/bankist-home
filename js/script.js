@@ -6,11 +6,14 @@ const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".btn--close-modal");
 const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
 
+// Menu fade animation
+const nav = document.querySelector(".nav");
+
 // Smooth scroll
 const btnScrollTo = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
 
-// Tabbed component
+// Tabs component
 const tabs = document.querySelectorAll(".operations__tab");
 const tabsContainer = document.querySelector(".operations__tab-container");
 const tabsContent = document.querySelectorAll(".operations__content");
@@ -38,6 +41,33 @@ document.addEventListener("keydown", function (e) {
     }
 });
 
+// Menu fade animation
+const handleHover = function(e) {
+    if (e.target.classList.contains("nav__link")) {
+        const link = e.target;
+        const siblings = link.closest(".nav").querySelectorAll(".nav__link");
+        const logo = link.closest(".nav").querySelector("img");
+
+        siblings.forEach(el => {
+            if (el !== link) el.style.opacity = this;
+        });
+        logo.style.opacity = this;
+    }
+};
+
+nav.addEventListener("mouseover", handleHover.bind(0.5));
+nav.addEventListener("mouseout", handleHover.bind(1));
+
+// Page navigation
+document.querySelector(".nav__links").addEventListener("click", function(e) {
+    // Matching strategy
+    if (e.target.classList.contains("nav__link")) {
+        e.preventDefault();
+        const id = e.target.getAttribute("href");
+        document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+    }
+});
+
 // Button to scroll to 1° section
 btnScrollTo.addEventListener("click", function(e) {
     // Scrolling
@@ -54,17 +84,7 @@ btnScrollTo.addEventListener("click", function(e) {
     section1.scrollIntoView({ behavior: "smooth" });
 });
 
-// Page navigation
-document.querySelector(".nav__links").addEventListener("click", function(e) {
-    // Matching strategy
-    if (e.target.classList.contains("nav__link")) {
-        e.preventDefault();
-        const id = e.target.getAttribute("href");
-        document.querySelector(id).scrollIntoView({ behavior: "smooth" });
-    }
-});
-
-// Tabbed component
+// Tabs component
 tabsContainer.addEventListener("click", function(e) {
     const clicked = e.target.closest(".operations__tab");
 
@@ -74,10 +94,10 @@ tabsContainer.addEventListener("click", function(e) {
     // Remove active tabs
     tabs.forEach(tab => tab.classList.remove("operations__tab--active"));
     tabsContent.forEach(c => c.classList.remove("operations__content--active"));
-    
+
     // Active tab
     clicked.classList.add("operations__tab--active");
 
     // Activate content area
     document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add("operations__content--active");
-})
+});
