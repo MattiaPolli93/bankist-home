@@ -107,9 +107,8 @@ p {
     color: #666;
 }
 
-/* !TODO This is BAD for accessibility! Don't do in the real world! */
 button:focus {
-    outline: none;
+    box-shadow: 0 0 0 2px rgba(223, 223, 223, 0.5) ;
 }
 
 img {
@@ -131,7 +130,6 @@ img {
     width: 100%;
 }
 
-/* nav and sticky class at the same time */
 .nav.sticky {
     position: fixed;
     background-color: rgba(255, 255, 255, 0.95);
